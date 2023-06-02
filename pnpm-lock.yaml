@@ -47,7 +47,7 @@ devDependencies:
     specifier: ^9.14.1
     version: registry.npmmirror.com/eslint-plugin-vue@9.14.1(eslint@8.41.0)
   husky:
-    specifier: ^8.0.0
+    specifier: ^8.0.3
     version: registry.npmmirror.com/husky@8.0.3
   postcss:
     specifier: ^8.4.21

@@ -1,11 +1,9 @@
 <template>
-  <div class="">
-    <h1>我是app 根组件</h1>
-  </div>
+  <div class=""></div>
 </template>
 
 <script setup lang="ts">
-import {} from "vue";
+import {} from "vue"
 </script>
 
 <style lang="scss" scoped></style>
