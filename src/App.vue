@@ -1,17 +1,18 @@
 <template>
   <div class="">
-    <h1>测试SVG图标使用</h1>
-    <!-- svg图标外层容器节点，内部需要与use标签结合使用 -->
-    <SvgIcon name="home" color="pink" width="26px" height="26px"></SvgIcon>
+    <router-view></router-view>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { onMounted } from "vue";
+import { reqLogin } from "@/api/user";
+onMounted(() => {
+  reqLogin({
+    username: "admin",
+    password: "111111",
+  });
+});
+</script>
 
-<style lang="scss" scoped>
-div {
-  h1 {
-    color: $color;
-  }
-}
-</style>
+<style lang="scss" scoped></style>

@@ -4,6 +4,7 @@ import path from "path";
 import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
 import { viteMockServe } from "vite-plugin-mock";
 // https://vitejs.dev/config/
+// command 用于检测当前开发阶段的环境
 export default defineConfig(({ command }) => {
   return {
     plugins: [
