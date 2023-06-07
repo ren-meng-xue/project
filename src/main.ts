@@ -16,7 +16,7 @@ import "virtual:svg-icons-register";
 import zhCn from "element-plus/dist/locale/zh-cn.mjs";
 //引入自定义插件对象，注册整个项目全局组件
 import GlobalComponent from "@/components";
-console.log(GlobalComponent, "GlobalComponent");
+// console.log(GlobalComponent, "GlobalComponent");
 //安装自定义插件（会触发components/index.ts里面的install方法）
 //引入路由
 import router from "./router";
@@ -31,7 +31,7 @@ app.use(ElementPlus, {
 app.use(GlobalComponent);
 app.use(router);
 app.use(pinia);
-console.log(import.meta.env);
+// console.log(import.meta.env);
 
 //将应用挂载到挂载点上
 app.mount("#app");
