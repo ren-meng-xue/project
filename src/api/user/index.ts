@@ -17,5 +17,5 @@ export const reqLogin = (data: LoginForm) => {
 
 //获取用户信息
 export const reqUserInfo = () => {
-  request.get<any, userResponseData>(API.USERINFO_URL);
+  return request.get<any, userResponseData>(API.USERINFO_URL);
 };

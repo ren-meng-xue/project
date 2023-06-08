@@ -20,6 +20,8 @@ import GlobalComponent from "@/components";
 //安装自定义插件（会触发components/index.ts里面的install方法）
 //引入路由
 import router from "./router";
+//引入路由鉴权
+import "./permission";
 //引入大仓库
 import pinia from "./store";
 //获取应用实例对象

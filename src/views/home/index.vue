@@ -1,9 +1,14 @@
 <template>
-  <div class="">首页</div>
+  <div class="">
+    首页
+    {{ useStore.username }}
+    {{ useStore.avatar }}
+  </div>
 </template>
 
 <script setup lang="ts">
-import {} from "vue";
+import useUserStore from "@/store/modules/user";
+let useStore = useUserStore();
 </script>
 
 <style lang="scss" scoped></style>

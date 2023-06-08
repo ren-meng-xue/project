@@ -16,10 +16,6 @@ export const constantRoute = [
     name: "layout",
     component: () => import("@/layout/index.vue"),
     redirect: "/home",
-    meta: {
-      title: "layout", //菜单需要的标题
-      icon: "CircleCheck",
-    },
     children: [
       {
         path: "/home",
@@ -52,6 +48,7 @@ export const constantRoute = [
     name: "Acl",
     component: () => import("@/layout/index.vue"),
     meta: { title: "权限管理", icon: "Lock" },
+    redirect: "/acl/user",
     children: [
       {
         path: "/acl/user",
@@ -78,6 +75,7 @@ export const constantRoute = [
     name: "Product",
     component: () => import("@/layout/index.vue"),
     meta: { title: "商品管理", icon: "Goods" },
+    redirect: "/product/trademark",
     children: [
       {
         path: "/product/trademark",

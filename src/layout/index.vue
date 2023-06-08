@@ -2,10 +2,7 @@
   <div class="layout_container">
     <!-- 左侧菜单 -->
 
-    <div
-      class="layout_slider"
-      :class="{ fold: LayoutSettingStore.fold ? true : false }"
-    >
+    <div class="layout_slider">
       <Logo></Logo>
       <!-- 展示菜单 -->
       <!-- 滚动组件 -->
@@ -83,9 +80,6 @@ export default {
       .el-menu {
         border-right: none; //清楚菜单右侧的边框
       }
-    }
-    &.fold {
-      width: $base-menu-min-width;
     }
   }
   .layout_tabBar {
