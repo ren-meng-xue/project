@@ -15,9 +15,9 @@ export const constantRoute = [
     path: "/",
     name: "layout",
     component: () => import("@/layout/index.vue"),
+    redirect: "/home",
     meta: {
       title: "layout", //菜单需要的标题
-      hidden: false,
       icon: "CircleCheck",
     },
     children: [
@@ -25,7 +25,6 @@ export const constantRoute = [
         path: "/home",
         meta: {
           title: "首页", //菜单需要的标题
-          hidden: false,
           icon: "Operation",
         },
         component: () => import("@/views/home/index.vue"),
@@ -41,6 +40,76 @@ export const constantRoute = [
       icon: "Edit",
     },
     component: () => import("@/views/404/index.vue"),
+  },
+  {
+    path: "/screen",
+    name: "Screen",
+    component: () => import("@/views/screen/index.vue"),
+    meta: { title: "数据大屏", icon: "Platform" },
+  },
+  {
+    path: "/acl",
+    name: "Acl",
+    component: () => import("@/layout/index.vue"),
+    meta: { title: "权限管理", icon: "Lock" },
+    children: [
+      {
+        path: "/acl/user",
+        name: "User",
+        component: () => import("@/views/acl/user/index.vue"),
+        meta: { title: "用户管理", icon: "User" },
+      },
+      {
+        path: "/acl/role",
+        name: "Role",
+        component: () => import("@/views/acl/role/index.vue"),
+        meta: { title: "角色管理", icon: "UserFilled" },
+      },
+      {
+        path: "/acl/permission",
+        name: "Permission",
+        component: () => import("@/views/acl/permission/index.vue"),
+        meta: { title: "菜单管理", icon: "Monitor" },
+      },
+    ],
+  },
+  {
+    path: "/product",
+    name: "Product",
+    component: () => import("@/layout/index.vue"),
+    meta: { title: "商品管理", icon: "Goods" },
+    children: [
+      {
+        path: "/product/trademark",
+        name: "Trademark",
+        component: () => import("@/views/product/trademark/index.vue"),
+        meta: { title: "品牌管理", icon: "ShoppingCartFull" },
+      },
+      {
+        path: "/product/attr",
+        name: "Attr",
+        component: () => import("@/views/product/attr/index.vue"),
+        meta: { title: "属性管理", icon: "ChromeFilled" },
+      },
+      {
+        path: "/product/spu",
+        component: () => import("@/views/product/spu/index.vue"),
+        name: "Spu",
+        meta: {
+          title: "SPU管理",
+          icon: "Calendar",
+        },
+      },
+      {
+        path: "/product/sku",
+        component: () => import("@/views/product/sku/index.vue"),
+        name: "Sku",
+        meta: {
+          title: "SKU管理",
+          icon: "Orange",
+        },
+      },
+    ],
   },
   {
     //任意路由，以上三种路由都不匹配的时候
