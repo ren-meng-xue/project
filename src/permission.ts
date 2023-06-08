@@ -1,3 +1,11 @@
+/*
+ * @Description: 描述信息
+ * @Version: 版本号
+ * @Author: xuebao
+ * @Date: 2023-06-08 22:46:16
+ * @LastEditors: renmengxue
+ * @LastEditTime: 2023-06-08 23:40:45
+ */
 //路由鉴权，项目当中的路由能不能被受权限的设置（某一个路由什么条件下可以访问，什么条件下不可以访问）
 import router from "@/router";
 //全局前置守卫
@@ -41,7 +49,7 @@ router.beforeEach(async (to: any, from: any, next: any) => {
         } catch (error) {
           //token失效
           //用户手动更改了我们本地存储的数据
-          userStore.userLogout();
+          await userStore.userLogout();
           next({
             path: "/login",
             query: {
