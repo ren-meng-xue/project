@@ -66,6 +66,9 @@ router.beforeEach(async (to: any, from: any, next: any) => {
 // router.afterEach((to: any, from: any) => {
 //   nprogress.done();
 // });
+router.afterEach(() => {
+  nprogress.done();
+});
 //一、任意路由切换实现进度条业务 使用的是插件nprogress
 
 // 二、路由鉴权（路由组件访问权限的设置）
