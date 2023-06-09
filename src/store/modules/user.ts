@@ -10,6 +10,12 @@
 import { defineStore } from "pinia";
 //引入接口
 import { reqLogin, reqUserInfo, reqLogout } from "@/api/user";
+
+import type {
+  loginFormData,
+  loginResponseData,
+  userInfoResponseData,
+} from "@/api/user/type";
 //引入数据类型
 import type UserState from "./type/type";
 //引入操作本地存储的工具方法
@@ -30,9 +36,9 @@ const useUserStore = defineStore("User", {
   //异步｜逻辑的地方
   actions: {
     //用户登陆的方法
-    async userLogin(data: any) {
+    async userLogin(data: loginFormData) {
       //登陆请求（成功｜失败）
-      const result: any = await reqLogin(data);
+      const result: loginResponseData = await reqLogin(data);
       //登陆成功-200获取token
       if (result.code == 200) {
         //pinia仓库存储一下token
@@ -49,7 +55,7 @@ const useUserStore = defineStore("User", {
     //获取用户信息
     async userInfo() {
       //获取用户信息进行存储仓库当中【用户头像、名字】
-      const result: any = await reqUserInfo();
+      const result: userInfoResponseData = await reqUserInfo();
       if (result.code == 200) {
         this.username = result.data.name;
         this.avatar = result.data.avatar;
@@ -60,8 +66,7 @@ const useUserStore = defineStore("User", {
     },
     //退出登陆
     async userLogout() {
-      const result = await reqLogout();
-      console.log(result, "resultresultresult");
+      const result: any = await reqLogout();
       if (result.code == 200) {
         this.token = "";
         this.username = "";
@@ -71,7 +76,6 @@ const useUserStore = defineStore("User", {
       } else {
         return Promise.reject(new Error(result.message));
       }
-      //目前没有mock接口：退出登陆接口（通知本地服务器本地用户唯一标识失败）
     },
   },
   getters: {},
