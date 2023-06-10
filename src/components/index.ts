@@ -1,6 +1,15 @@
+/*
+ * @Description: 描述信息
+ * @Version: 版本号
+ * @Author: xuebao
+ * @Date: 2023-06-08 22:46:16
+ * @LastEditors: renmengxue
+ * @LastEditTime: 2023-06-10 18:07:27
+ */
 //引入项目中全部的全局组件
 import SvgIcon from "./SvgIcon/index.vue";
 import Pagination from "./Pagination/index.vue";
+import Category from "./Category/index.vue";
 //引入element-plus提供全部图标组件
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 // console.log(
@@ -13,6 +22,7 @@ import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 const allGlobalComponent: any = {
   SvgIcon,
   Pagination,
+  Category,
 };
 
 // Object.keys(allGlobalComponent)把对象变成数组

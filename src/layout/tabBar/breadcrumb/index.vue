@@ -1,3 +1,11 @@
+<!--
+ * @Description: 描述信息
+ * @Version: 版本号
+ * @Author: xuebao
+ * @Date: 2023-06-08 22:46:16
+ * @LastEditors: renmengxue
+ * @LastEditTime: 2023-06-10 20:56:18
+-->
 <template>
   <!-- 顶部左侧 -->
   <el-icon style="margin-right: 10px" @click="changeIcon">
@@ -24,22 +32,22 @@
 </template>
 
 <script setup lang="ts">
-import { useRoute } from "vue-router";
-import useLayoutSettingStore from "@/store/modules/setting";
+import { useRoute } from 'vue-router'
+import useLayoutSettingStore from '@/store/modules/setting'
 //获取layout配置相关的仓库
-let LayoutSettingStore = useLayoutSettingStore();
+let LayoutSettingStore = useLayoutSettingStore()
 //点击图标的方法
 const changeIcon = () => {
   //图标进行切换
-  LayoutSettingStore.fold = !LayoutSettingStore.fold;
-};
-let $route = useRoute();
-console.log($route.matched, "$route");
+  LayoutSettingStore.fold = !LayoutSettingStore.fold
+}
+let $route = useRoute()
+// console.log($route.matched, "$route");
 </script>
 
 <script lang="ts">
 export default {
-  name: "Breadcrumb",
-};
+  name: 'Breadcrumb'
+}
 </script>
 <style lang="scss" scoped></style>
