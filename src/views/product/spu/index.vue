@@ -2,65 +2,74 @@
   <div class="">
     <Category :scene="scene"></Category>
     <el-card style="margin: 10px 0">
-      <el-button
-        icon="Plus"
-        type="primary"
-        style="margin: 10px 0"
-        :disabled="categoryStore.c3Id ? false : true"
-      >
-        添加SPU</el-button
-      >
-      <el-table style="margin: 10px 0" border :data="records">
-        <el-table-column
-          type="index"
-          label="序号"
-          align="center"
-          width="80px"
-        ></el-table-column>
-        <el-table-column label="SPU名称" prop="spuName"></el-table-column>
-        <el-table-column
-          label="SPU描述"
-          prop="description"
-          show-overflow-tooltip
-        ></el-table-column>
-        <el-table-column label="SPU操作">
-          <template #default="{ row, $index }">
-            <el-button
-              icon="Plus"
-              type="primary"
-              size="small"
-              title="添加SKU"
-            ></el-button>
-            <el-button
-              icon="Edit"
-              type="primary"
-              size="small"
-              title="修改SPU"
-            ></el-button>
-            <el-button
-              icon="View"
-              type="primary"
-              size="small"
-              title="查看SPU"
-            ></el-button>
-            <el-button
-              icon="Delete"
-              type="primary"
-              size="small"
-              title="删除SPU"
-            ></el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <el-pagination
-        v-model:current-page="pageNo"
-        v-model:page-size="pageSize"
-        :page-sizes="[3, 5, 7, 9]"
-        :background="true"
-        layout=" prev, pager, next, jumper,->,total, sizes"
-        :total="total"
-        @current-change="getHasSpu"
-      />
+      <!-- v-if与v-show都可以实现显示与隐藏，但是建议使用v-show，这样就可以使用一次，剩下的就是css显示与隐藏 -->
+      <div v-show="scene == 0">
+        <el-button
+          icon="Plus"
+          type="primary"
+          style="margin: 10px 0"
+          :disabled="categoryStore.c3Id ? false : true"
+          @click="addSpu"
+        >
+          添加SPU</el-button
+        >
+        <el-table style="margin: 10px 0" border :data="records">
+          <el-table-column
+            type="index"
+            label="序号"
+            align="center"
+            width="80px"
+          ></el-table-column>
+          <el-table-column label="SPU名称" prop="spuName"></el-table-column>
+          <el-table-column
+            label="SPU描述"
+            prop="description"
+            show-overflow-tooltip
+          ></el-table-column>
+          <el-table-column label="SPU操作">
+            <template #default="{ row, $index }">
+              <el-button
+                icon="Plus"
+                type="primary"
+                size="small"
+                title="添加SKU"
+              ></el-button>
+              <el-button
+                icon="Edit"
+                type="primary"
+                size="small"
+                @click="updateSpu"
+                title="修改SPU"
+              ></el-button>
+              <el-button
+                icon="View"
+                type="primary"
+                size="small"
+                title="查看SPU"
+              ></el-button>
+              <el-button
+                icon="Delete"
+                type="primary"
+                size="small"
+                title="删除SPU"
+              ></el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+        <el-pagination
+          v-model:current-page="pageNo"
+          v-model:page-size="pageSize"
+          :page-sizes="[3, 5, 7, 9]"
+          :background="true"
+          layout=" prev, pager, next, jumper,->,total, sizes"
+          :total="total"
+          @current-change="getHasSpu"
+        />
+      </div>
+      <!-- 添加｜修改spu子组件 -->
+      <SpuForm v-show="scene == 1" @changeScene="changeScene" />
+      <!-- 添加sku子组件 -->
+      <SkuForm v-show="scene == 2" />
     </el-card>
   </div>
 </template>
@@ -73,7 +82,9 @@ import { reqHasSpu } from "@/api/product/spu";
 import type { HasSpuResponseData, Records } from "@/api/product/spu/type";
 //场景的数据
 import { ref, watch } from "vue";
-let scene = ref<number>(0);
+import SkuForm from "./skuForm.vue";
+import SpuForm from "./spuForm.vue";
+let scene = ref<number>(0); //0显示已有spu，1添加｜修改已有spu ，3添加sku
 //分页器默认页码
 let pageNo = ref<number>(1);
 //每一页展示几条数据
@@ -102,7 +113,23 @@ const getHasSpu = async () => {
     records.value = result.data.records;
     total.value = result.data.total;
   }
-  console.log(result, "888");
+};
+
+//添加新的SPU按钮的回调
+const addSpu = () => {
+  //切换为场景1：添加与修改已有Spu结构 SpuForm
+  scene.value = 1;
+};
+//修改已有的spu的按钮的回调
+const updateSpu = () => {
+  //切换为场景1：添加与修改已有Spu结构 SpuForm
+  scene.value = 1;
+};
+
+//子组件SpuForm绑定自定义事件：目前是让子组件通知父组件切换场景为0
+const changeScene = (num: number) => {
+  //子组件SpuForm点击取消变为场景0，展示已有的spu
+  scene.value = num;
 };
 </script>
 
