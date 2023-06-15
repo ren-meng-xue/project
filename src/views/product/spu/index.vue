@@ -38,7 +38,7 @@
                 icon="Edit"
                 type="primary"
                 size="small"
-                @click="updateSpu"
+                @click="updateSpu(row)"
                 title="修改SPU"
               ></el-button>
               <el-button
@@ -67,7 +67,7 @@
         />
       </div>
       <!-- 添加｜修改spu子组件 -->
-      <SpuForm v-show="scene == 1" @changeScene="changeScene" />
+      <SpuForm v-show="scene == 1" ref="SpuForms" @changeScene="changeScene" />
       <!-- 添加sku子组件 -->
       <SkuForm v-show="scene == 2" />
     </el-card>
@@ -79,7 +79,11 @@
 import useCategoryStore from "@/store/modules/category";
 let categoryStore = useCategoryStore();
 import { reqHasSpu } from "@/api/product/spu";
-import type { HasSpuResponseData, Records } from "@/api/product/spu/type";
+import type {
+  HasSpuResponseData,
+  Records,
+  SpuData,
+} from "@/api/product/spu/type";
 //场景的数据
 import { ref, watch } from "vue";
 import SkuForm from "./skuForm.vue";
@@ -93,6 +97,8 @@ let pageSize = ref<number>(3);
 let records = ref<Records>([]);
 //存储总个数
 let total = ref<number>(0);
+//获取子组件实例
+let SpuForms = ref<any>();
 //监听三级分类ID变化
 watch(
   () => categoryStore.c3Id,
@@ -120,10 +126,19 @@ const addSpu = () => {
   //切换为场景1：添加与修改已有Spu结构 SpuForm
   scene.value = 1;
 };
+
+/***
+ * 面试题 在父组件的内部，如何拿到子组件的实例vc
+ *
+ */
 //修改已有的spu的按钮的回调
-const updateSpu = () => {
+const updateSpu = (row: SpuData) => {
   //切换为场景1：添加与修改已有Spu结构 SpuForm
   scene.value = 1;
+  //调用子组件实例的方法（因为template模版一上来就是v-show隐藏了，是可以拿到组件的实例的）
+  console.log(SpuForms.value);
+  //调用子组件实例方法获取完整已有的SPU数据
+  SpuForms.value.initHasSpuData(row);
 };
 
 //子组件SpuForm绑定自定义事件：目前是让子组件通知父组件切换场景为0
