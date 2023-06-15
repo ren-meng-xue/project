@@ -49,8 +49,10 @@ export interface SpuImg {
   createTime?: string;
   updateTime?: string;
   spuId?: number;
-  imgName: string;
-  imgUrl: string;
+  imgName?: string;
+  imgUrl?: string;
+  name?: string;
+  url?: string;
 }
 // 已有的spu照片墙数据的类型
 export interface SpuHasImg extends ResponseData {

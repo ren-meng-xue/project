@@ -24,15 +24,28 @@
       ></el-input>
     </el-form-item>
     <el-form-item label="SPU照片">
+      <!-- v-model:fileList 展示默认图片 
+           action:上传图片的接口地址
+           list-type:文件列表的类型
+      -->
       <el-upload
-        v-model:file-list="fileList"
-        action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
+        v-model:file-list="imgList"
+        action="/api/admin/product/fileUpload"
         list-type="picture-card"
         :on-preview="handlePictureCardPreview"
         :on-remove="handleRemove"
+        :before-upload="handlerUpload"
       >
         <el-icon><Plus /></el-icon>
       </el-upload>
+      <el-dialog v-model="dialogVisible">
+        <img
+          w-full
+          :src="dialogImageUrl"
+          alt="Preview Image"
+          style="width: 100%; height: 100%"
+        />
+      </el-dialog>
     </el-form-item>
     <el-form-item label="SPU销售属性">
       <!-- 展示销售属性的下拉菜单 -->
@@ -84,6 +97,7 @@ import {
 } from "@/api/product/spu";
 let $emits = defineEmits(["changeScene"]);
 import { ref } from "vue";
+import { ElMessage } from "element-plus";
 //子组件点击取消按钮，通知父组件切换场景为1，去展示已有spu数据
 const cancel = () => {
   $emits("changeScene", 0);
@@ -97,6 +111,10 @@ let imgList = ref<SpuImg[]>([]);
 let saleAttr = ref<SaleAttr[]>([]);
 //全部销售属性
 let allSaleAttr = ref<HasSaleAttr[]>([]);
+//控制对话框的显示与隐藏
+let dialogVisible = ref<boolean>(false);
+//存储预览图片的地址
+let dialogImageUrl = ref<string>("");
 //存储已有的SPU对象 添加没有id，修改有id
 let SpuParams = ref<SpuData>({
   category3Id: "", //收集三级分类的id
@@ -123,11 +141,49 @@ const initHasSpuData = async (spu: SpuData) => {
   //存储全部品牌数据
   AllTradeMarks.value = result.data;
   //SPU对应商品图片
-  imgList.value = result1.data;
+  imgList.value = result1.data.map((item) => {
+    return {
+      name: item.imgName,
+      url: item.imgUrl,
+    };
+  });
   //已有SPU销售属性
   saleAttr.value = result2.data;
   //获取全部销售属性
   allSaleAttr.value = result3.data;
+};
+//照片墙点击预览的时候触发的钩子
+const handlePictureCardPreview = (file: any) => {
+  dialogVisible.value = true;
+  dialogImageUrl.value = file.url;
+};
+//照片墙删除的时候执行的钩子
+const handleRemove = () => {};
+//照片墙上传之前限制类型 上传文件的大小和类型
+const handlerUpload = (file: any) => {
+  if (
+    file.type == "image/png" ||
+    file.type == "image/jpeg" ||
+    file.type == "image/gif"
+  ) {
+    if (file.size / 1024 / 1024 < 3) {
+      //多少M
+      return true;
+    } else {
+      ElMessage({
+        type: "error",
+        message: "上传的文件不能大于3M",
+      });
+      return false;
+    }
+  } else {
+    ElMessage({
+      type: "error",
+      message: "上传的文件是png|jpeg|gif",
+    });
+    return false;
+  }
+  // console.log(file);
 };
 //想让父组件用，需要对外暴露
 defineExpose({ initHasSpuData });
