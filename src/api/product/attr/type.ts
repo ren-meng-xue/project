@@ -44,6 +44,7 @@ export interface Attr {
   categoryId: number | string;
   categoryLevel: number;
   attrValueList: AttrValueList;
+  attrIdAndValueId?: string;
 }
 
 //存储每一个属性对象的数组ts类型

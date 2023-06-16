@@ -33,6 +33,7 @@
                 type="primary"
                 size="small"
                 title="添加SKU"
+                @click="addSku(row)"
               ></el-button>
               <el-button
                 icon="Edit"
@@ -46,6 +47,7 @@
                 type="primary"
                 size="small"
                 title="查看SPU"
+                @click="findSku(row)"
               ></el-button>
               <el-button
                 icon="Delete"
@@ -69,7 +71,23 @@
       <!-- 添加｜修改spu子组件 -->
       <SpuForm v-show="scene == 1" ref="SpuForms" @changeScene="changeScene" />
       <!-- 添加sku子组件 -->
-      <SkuForm v-show="scene == 2" />
+      <SkuForm v-show="scene == 2" ref="SkuForms" @changeScene="changeScene" />
+      <!-- dialog对话框：展示已有sku数据 -->
+      <el-dialog title="SKU列表" v-model="show">
+        <el-table border :data="skuArr">
+          <el-table-column label="SKU名字" prop="skuName"></el-table-column>
+          <el-table-column label="SKU价格" prop="price"></el-table-column>
+          <el-table-column label="SKU重量" prop="weight"></el-table-column>
+          <el-table-column label="SKU图片">
+            <template #default="{ row, $index }">
+              <img
+                :src="row.skuDefaultImg"
+                alt=""
+                style="width: 100px; height: 100px"
+            /></template>
+          </el-table-column>
+        </el-table>
+      </el-dialog>
     </el-card>
   </div>
 </template>
@@ -78,11 +96,13 @@
 //引入分类的仓库
 import useCategoryStore from "@/store/modules/category";
 let categoryStore = useCategoryStore();
-import { reqHasSpu } from "@/api/product/spu";
+import { reqHasSpu, reqSkuList } from "@/api/product/spu";
 import type {
   HasSpuResponseData,
   Records,
   SpuData,
+  SkuData,
+  SkuInfoData,
 } from "@/api/product/spu/type";
 //场景的数据
 import { ref, watch } from "vue";
@@ -99,6 +119,10 @@ let records = ref<Records>([]);
 let total = ref<number>(0);
 //获取子组件实例
 let SpuForms = ref<any>();
+let SkuForms = ref<any>();
+//存储全部的SKU数据
+let skuArr = ref<SkuData[]>([]);
+let show = ref<boolean>(false);
 //监听三级分类ID变化
 watch(
   () => categoryStore.c3Id,
@@ -146,17 +170,32 @@ const updateSpu = (row: SpuData) => {
 
 //子组件SpuForm绑定自定义事件：目前是让子组件通知父组件切换场景为0
 const changeScene = (obj: any) => {
-  console.log(obj, "1999");
-
   //子组件SpuForm点击取消变为场景0，展示已有的spu
   scene.value = obj.flag;
-
   if (obj.params === "update") {
     //更新留在当前页
     getHasSpu(pageNo.value);
   } else {
     //第一页
     getHasSpu();
+  }
+};
+
+//添加Sku按钮的回调
+const addSku = (row: SpuData) => {
+  //点击添加Sku按钮切换场景为2
+  scene.value = 2;
+  //调用子组件的方法初始化添加Sku的数据
+  SkuForms.value.initSkuData(categoryStore.c1Id, categoryStore.c2Id, row);
+};
+
+//查看SKU
+const findSku = async (row: SpuData) => {
+  let result: SkuInfoData = await reqSkuList(row.id as number);
+  if (result.code == 200) {
+    show.value = true;
+    //对话框显示出来
+    skuArr.value = result.data;
   }
 };
 </script>
