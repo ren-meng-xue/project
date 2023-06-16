@@ -109,7 +109,8 @@ watch(
   }
 );
 //获取某一个三级分类下全部的已有SPU
-const getHasSpu = async () => {
+const getHasSpu = async (pager = 1) => {
+  pageNo.value = pager;
   let result: HasSpuResponseData = await reqHasSpu(
     pageNo.value,
     pageSize.value,
@@ -125,6 +126,8 @@ const getHasSpu = async () => {
 const addSpu = () => {
   //切换为场景1：添加与修改已有Spu结构 SpuForm
   scene.value = 1;
+  //点击添加spu按钮，调用子组件的方法
+  SpuForms.value.initAddSpu(categoryStore.c3Id);
 };
 
 /***
@@ -142,9 +145,19 @@ const updateSpu = (row: SpuData) => {
 };
 
 //子组件SpuForm绑定自定义事件：目前是让子组件通知父组件切换场景为0
-const changeScene = (num: number) => {
+const changeScene = (obj: any) => {
+  console.log(obj, "1999");
+
   //子组件SpuForm点击取消变为场景0，展示已有的spu
-  scene.value = num;
+  scene.value = obj.flag;
+
+  if (obj.params === "update") {
+    //更新留在当前页
+    getHasSpu(pageNo.value);
+  } else {
+    //第一页
+    getHasSpu();
+  }
 };
 </script>
 

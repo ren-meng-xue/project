@@ -146,7 +146,6 @@ let CategoryStore = useCategoryStore();
 //存储已有属性与属性值
 let attrArr = ref<Attr[]>([]);
 //定义卡片组件内容切换变量与查看模式的切换
-let flag = ref<boolean>(true);
 let scene = ref<number>(0); //rough是0显示table 如果是1展示添加
 //定义一个响应式数据控制编辑模式
 //收集新增的属性的数据

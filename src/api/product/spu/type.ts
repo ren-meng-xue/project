@@ -63,7 +63,7 @@ export interface SpuHasImg extends ResponseData {
 export interface SaleAttrValue {
   id?: number;
   spuId?: number;
-  baseSaleAttrId: number;
+  baseSaleAttrId: number | string;
   saleAttrValueName: string;
   saleAttrName?: string;
   createTime?: string;
@@ -80,9 +80,11 @@ export interface SaleAttr {
   createTime?: null;
   updateTime?: null;
   spuId?: number;
-  baseSaleAttrId: number;
+  baseSaleAttrId: number | string;
   saleAttrName: string;
   spuSaleAttrValueList: SpuSaleAttrValueList;
+  flag?: boolean;
+  saleAttrValue?: string;
 }
 
 //Spu已有销售属性接口返回数据ts类型
