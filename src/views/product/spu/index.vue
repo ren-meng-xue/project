@@ -47,12 +47,21 @@
                 size="small"
                 title="查看SPU"
               ></el-button>
-              <el-button
+              <el-popconfirm
+                :title="`你确定删除${row.spuName}吗？`"
                 icon="Delete"
-                type="primary"
-                size="small"
-                title="删除SPU"
-              ></el-button>
+                width="200px"
+                @confirm="deleteSpu(row)"
+              >
+                <template #reference>
+                  <el-button
+                    icon="Delete"
+                    type="primary"
+                    size="small"
+                    title="删除SPU"
+                  ></el-button>
+                </template>
+              </el-popconfirm>
             </template>
           </el-table-column>
         </el-table>
@@ -76,59 +85,61 @@
 
 <script setup lang="ts">
 //引入分类的仓库
-import useCategoryStore from "@/store/modules/category";
-let categoryStore = useCategoryStore();
-import { reqHasSpu } from "@/api/product/spu";
+import useCategoryStore from '@/store/modules/category'
+let categoryStore = useCategoryStore()
+import { reqHasSpu, reqRemoveSpu } from '@/api/product/spu'
 import type {
   HasSpuResponseData,
   Records,
-  SpuData,
-} from "@/api/product/spu/type";
+  SpuData
+} from '@/api/product/spu/type'
 //场景的数据
-import { ref, watch } from "vue";
-import SkuForm from "./skuForm.vue";
-import SpuForm from "./spuForm.vue";
-let scene = ref<number>(0); //0显示已有spu，1添加｜修改已有spu ，3添加sku
+import { ref, watch, onBeforeUnmount } from 'vue'
+// onBeforeUnmount当路由组件销毁的时候，情调数据
+import SkuForm from './skuForm.vue'
+import SpuForm from './spuForm.vue'
+import { ElMessage } from 'element-plus'
+let scene = ref<number>(0) //0显示已有spu，1添加｜修改已有spu ，3添加sku
 //分页器默认页码
-let pageNo = ref<number>(1);
+let pageNo = ref<number>(1)
 //每一页展示几条数据
-let pageSize = ref<number>(3);
+let pageSize = ref<number>(3)
 //存储已有spu的数据
-let records = ref<Records>([]);
+let records = ref<Records>([])
 //存储总个数
-let total = ref<number>(0);
+let total = ref<number>(0)
 //获取子组件实例
-let SpuForms = ref<any>();
+let SpuForms = ref<any>()
 //监听三级分类ID变化
 watch(
   () => categoryStore.c3Id,
   () => {
     //务必保证categoryStore.c3Id有值
-    if (!categoryStore.c3Id) return;
-    getHasSpu();
+    if (!categoryStore.c3Id) return
+    getHasSpu()
   }
-);
+)
 //获取某一个三级分类下全部的已有SPU
 const getHasSpu = async (pager = 1) => {
-  pageNo.value = pager;
+  pageNo.value = pager
   let result: HasSpuResponseData = await reqHasSpu(
     pageNo.value,
     pageSize.value,
     categoryStore.c3Id
-  );
+  )
   if (result.code == 200) {
-    records.value = result.data.records;
-    total.value = result.data.total;
+    records.value = result.data.records
+    total.value = result.data.total
   }
-};
+}
 
 //添加新的SPU按钮的回调
 const addSpu = () => {
   //切换为场景1：添加与修改已有Spu结构 SpuForm
-  scene.value = 1;
+  scene.value = 1
   //点击添加spu按钮，调用子组件的方法
-  SpuForms.value.initAddSpu(categoryStore.c3Id);
-};
+  SpuForms.value.initAddSpu(categoryStore.c3Id)
+}
 
 /***
  * 面试题 在父组件的内部，如何拿到子组件的实例vc
@@ -137,28 +148,51 @@ const addSpu = () => {
 //修改已有的spu的按钮的回调
 const updateSpu = (row: SpuData) => {
   //切换为场景1：添加与修改已有Spu结构 SpuForm
-  scene.value = 1;
+  scene.value = 1
   //调用子组件实例的方法（因为template模版一上来就是v-show隐藏了，是可以拿到组件的实例的）
-  console.log(SpuForms.value);
+  console.log(SpuForms.value)
   //调用子组件实例方法获取完整已有的SPU数据
-  SpuForms.value.initHasSpuData(row);
-};
+  SpuForms.value.initHasSpuData(row)
+}
 
 //子组件SpuForm绑定自定义事件：目前是让子组件通知父组件切换场景为0
 const changeScene = (obj: any) => {
-  console.log(obj, "1999");
+  console.log(obj, '1999')
 
   //子组件SpuForm点击取消变为场景0，展示已有的spu
-  scene.value = obj.flag;
+  scene.value = obj.flag
 
-  if (obj.params === "update") {
+  if (obj.params === 'update') {
     //更新留在当前页
-    getHasSpu(pageNo.value);
+    getHasSpu(pageNo.value)
   } else {
     //第一页
-    getHasSpu();
+    getHasSpu()
   }
-};
+}
+
+//删除SPU
+const deleteSpu = async (row: SpuData) => {
+  let result: any = await reqRemoveSpu(row.id)
+  console.log(result)
+  if (result.code == 200) {
+    ElMessage({
+      type: 'success',
+      message: '删除成功'
+    })
+    //获取剩余SPU  如果删除的是最后一页面，并且最后一页只有一条数据，就返回前一页
+    getHasSpu(records.value.length > 1 ? pageNo.value : pageNo.value - 1)
+  } else {
+    ElMessage({
+      type: 'error',
+      message: '删除失败'
+    })
+  }
+}
+//路由组件销毁的的时候 清空仓库关于分类的数据
+onBeforeUnmount(() => {
+  categoryStore.$reset()
+})
 </script>
 
 <style lang="scss" scoped></style>
