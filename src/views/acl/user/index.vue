@@ -172,6 +172,7 @@ const addUser = () => {
   //抽屉显示出来
   drawer.value = true;
   nextTick(() => {
+    // log
     formRef.value.clearValidate("password", "username", "name");
   });
 };
