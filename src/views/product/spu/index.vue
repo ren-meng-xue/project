@@ -49,12 +49,21 @@
                 title="查看SPU"
                 @click="findSku(row)"
               ></el-button>
-              <el-button
+              <el-popconfirm
+                :title="`你确定删除${row.spuName}吗？`"
                 icon="Delete"
-                type="primary"
-                size="small"
-                title="删除SPU"
-              ></el-button>
+                width="200px"
+                @confirm="deleteSpu(row)"
+              >
+                <template #reference>
+                  <el-button
+                    icon="Delete"
+                    type="primary"
+                    size="small"
+                    title="删除SPU"
+                  ></el-button>
+                </template>
+              </el-popconfirm>
             </template>
           </el-table-column>
         </el-table>
@@ -96,7 +105,7 @@
 //引入分类的仓库
 import useCategoryStore from "@/store/modules/category";
 let categoryStore = useCategoryStore();
-import { reqHasSpu, reqSkuList } from "@/api/product/spu";
+import { reqHasSpu, reqSkuList, reqRemoveSpu } from "@/api/product/spu";
 import type {
   HasSpuResponseData,
   Records,
@@ -105,9 +114,11 @@ import type {
   SkuInfoData,
 } from "@/api/product/spu/type";
 //场景的数据
-import { ref, watch } from "vue";
+import { ref, watch, onBeforeUnmount } from "vue";
+// onBeforeUnmount当路由组件销毁的时候，情调数据
 import SkuForm from "./skuForm.vue";
 import SpuForm from "./spuForm.vue";
+import { ElMessage } from "element-plus";
 let scene = ref<number>(0); //0显示已有spu，1添加｜修改已有spu ，3添加sku
 //分页器默认页码
 let pageNo = ref<number>(1);
@@ -118,11 +129,11 @@ let records = ref<Records>([]);
 //存储总个数
 let total = ref<number>(0);
 //获取子组件实例
-let SpuForms = ref<any>();
 let SkuForms = ref<any>();
 //存储全部的SKU数据
 let skuArr = ref<SkuData[]>([]);
 let show = ref<boolean>(false);
+let SpuForms = ref<any>();
 //监听三级分类ID变化
 watch(
   () => categoryStore.c3Id,
@@ -170,14 +181,36 @@ const updateSpu = (row: SpuData) => {
 
 //子组件SpuForm绑定自定义事件：目前是让子组件通知父组件切换场景为0
 const changeScene = (obj: any) => {
+  console.log(obj, "1999");
+
   //子组件SpuForm点击取消变为场景0，展示已有的spu
   scene.value = obj.flag;
+
   if (obj.params === "update") {
     //更新留在当前页
     getHasSpu(pageNo.value);
   } else {
     //第一页
     getHasSpu();
+  }
+};
+
+//删除SPU
+const deleteSpu = async (row: SpuData) => {
+  let result: any = await reqRemoveSpu(row.id);
+  console.log(result);
+  if (result.code == 200) {
+    ElMessage({
+      type: "success",
+      message: "删除成功",
+    });
+    //获取剩余SPU  如果删除的是最后一页面，并且最后一页只有一条数据，就返回前一页
+    getHasSpu(records.value.length > 1 ? pageNo.value : pageNo.value - 1);
+  } else {
+    ElMessage({
+      type: "error",
+      message: "删除失败",
+    });
   }
 };
 
@@ -198,6 +231,10 @@ const findSku = async (row: SpuData) => {
     skuArr.value = result.data;
   }
 };
+//路由组件销毁的的时候 清空仓库关于分类的数据
+onBeforeUnmount(() => {
+  categoryStore.$reset();
+});
 </script>
 
 <style lang="scss" scoped></style>

@@ -1,3 +1,11 @@
+/*
+ * @Description: 描述信息
+ * @Version: 版本号
+ * @Author: xuebao
+ * @Date: 2023-06-18 14:48:12
+ * @LastEditors: renmengxue
+ * @LastEditTime: 2023-06-18 14:56:56
+ */
 //SPU管理模块的接口
 import request from "@/utils/request";
 import {
@@ -28,13 +36,17 @@ enum API {
 
   //追加一个新的spu
   ADDSPU_URL = "/admin/product/saveSpuInfo",
+
   //编辑一个spu
   UPDATESPU_URL = "/admin/product/updateSpuInfo",
+
   //追加一个新增的SKU地址
   ADDSKU_URL = "/admin/product/saveSkuInfo",
 
   //查看某一个已有的SPU下全部售卖的商品
   SKUINFO_URL = "/admin/product/findBySpuId/",
+  //删除已有的spu
+  REMOVESPU_URL = "/admin/product/deleteSpu/",
 }
 //获取某一个三级分类下已有的SPU数据
 export const reqHasSpu = (
@@ -79,3 +91,7 @@ export const reqAddSku = (data: SkuData) =>
 //获取SKU数据
 export const reqSkuList = (spuId: number | string) =>
   request.get<any, SkuInfoData>(API.SKUINFO_URL + spuId);
+
+//删除已有的spu
+export const reqRemoveSpu = (spuId: number | string) =>
+  request.delete<any, any>(API.REMOVESPU_URL + spuId);
