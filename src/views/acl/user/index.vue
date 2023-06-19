@@ -111,9 +111,8 @@
 
 <script setup lang="ts">
 import { reqUserInfo } from "@/api/acl/user";
-import { ref, onMounted, reactive } from "vue";
+import { ref, onMounted, reactive, nextTick } from "vue";
 import type { userInfoResponseData, User } from "@/api/acl/user/type";
-// import {redAddOrUpdateUser} from '@/api/acl/user'
 import { redAddOrUpdateUser } from "@/api/acl/user";
 import { ElMessage } from "element-plus";
 //默认第一页
@@ -161,14 +160,20 @@ const handleSizeChange = () => {
 
 //添加用户按钮的回调
 const addUser = () => {
+  //nextTick 获取更新之后的Dom
+  // 或者问号
   //清空一下数据
   Object.assign(userParams, {
     username: "",
     name: "",
     password: "",
   });
+
   //抽屉显示出来
   drawer.value = true;
+  nextTick(() => {
+    formRef.value.clearValidate("password", "username", "name");
+  });
 };
 
 //更新已有的按钮的回调(row即为已有的用户信息)
