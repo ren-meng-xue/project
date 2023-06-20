@@ -179,6 +179,7 @@
 </template>
 
 <script setup lang="ts">
+import useLayoutSettingStore from "@/store/modules/setting";
 import { reqUserInfo } from "@/api/acl/user";
 import { ref, onMounted, reactive, nextTick } from "vue";
 import type {
@@ -222,6 +223,9 @@ let formRef = ref<any>();
 
 //定义响应式数据 ：收集用户输入进来的关键字
 let keywords = ref<string>("");
+
+//获取setting仓库模版
+let settingStore = useLayoutSettingStore();
 //存储全部用户的数据
 onMounted(() => {
   getHasUser();
@@ -450,6 +454,11 @@ const search = () => {
   getHasUser();
   //清空关键字
   keywords.value = "";
+};
+
+//重置按钮的回调
+const reset = () => {
+  settingStore.refresh = !settingStore.refresh;
 };
 </script>
 
