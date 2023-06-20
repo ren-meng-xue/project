@@ -3,11 +3,17 @@
     <el-card style="height: 80px">
       <el-form :inline="true" class="form">
         <el-form-item label="用户名：">
-          <el-input placeholder="请输入用户名"></el-input>
+          <el-input placeholder="请输入用户名" v-model="keywords"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary">搜索</el-button>
-          <el-button type="primary">重置</el-button>
+          <el-button
+            type="primary"
+            :disabled="keywords ? false : true"
+            @keydown.enter="search"
+            @click="search"
+            >搜索</el-button
+          >
+          <el-button type="primary" @click="reset">重置</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -214,6 +220,8 @@ let selectIdArr = ref<User[]>([]);
 //获取form组件实例
 let formRef = ref<any>();
 
+//定义响应式数据 ：收集用户输入进来的关键字
+let keywords = ref<string>("");
 //存储全部用户的数据
 onMounted(() => {
   getHasUser();
@@ -221,9 +229,11 @@ onMounted(() => {
 
 //获取全部已有的用户信息
 const getHasUser = async (pager = 1) => {
+  pageNo.value = pager;
   let result: userInfoResponseData = await reqUserInfo(
     pageNo.value,
-    pageSize.value
+    pageSize.value,
+    keywords.value
   );
   if (result.code == 200) {
     total.value = result.data.total;
@@ -433,6 +443,13 @@ const deleteSelectUser = async () => {
       message: result.data,
     });
   }
+};
+//搜索按钮的回调
+const search = () => {
+  //根据关键字获取相应的用户数据
+  getHasUser();
+  //清空关键字
+  keywords.value = "";
 };
 </script>
 
