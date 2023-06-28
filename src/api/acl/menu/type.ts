@@ -25,3 +25,12 @@ export type PermissionList = Permission[];
 export interface PermissionResponseData extends ResponseData {
   data: PermissionList;
 }
+//添加与修改菜单携带参数的ts数据类型
+
+export interface MenuParams {
+  id?: number; //Id
+  code: string; //权限数值
+  level: number; //number;
+  name: string;
+  pid: number; //菜单的ID
+}
