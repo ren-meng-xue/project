@@ -6,9 +6,20 @@
         <Top />
       </div>
       <div class="bottom">
-        <div class="left">左侧</div>
-        <div class="center">中间</div>
-        <div class="right">右侧</div>
+        <div class="left">
+          <Tourist class="Tourist" />
+          <Sex class="Sex" />
+          <Age class="Age" />
+        </div>
+        <div class="center">
+          <Map class="map" />
+          <Line class="line" />
+        </div>
+        <div class="right">
+          <rank class="rank" />
+          <year class="year" />
+          <counter class="counter" />
+        </div>
       </div>
     </div>
   </div>
@@ -18,6 +29,18 @@
 import { ref, onMounted } from "vue";
 //引入顶部子组件
 import Top from "./components/top/index.vue";
+//引入左侧三个子组件
+import Tourist from "./components/tourist/index.vue";
+import Age from "./components/age/index.vue";
+import Sex from "./components/sex/index.vue";
+//引入中间两个子组件
+import Map from "./components/map/index.vue";
+import Line from "./components/line/index.vue";
+
+//引入右侧排行组件
+import rank from "./components/rank/index.vue";
+import year from "./components/year/index.vue";
+import counter from "./components/counter/index.vue";
 //获取数据大屏展示内容盒子的Dom元素
 let screen = ref();
 onMounted(() => {
@@ -55,18 +78,59 @@ window.onresize = () => {
     .top {
       width: 100%;
       height: 40px;
-      /* background-color: seagreen; */
     }
     .bottom {
       display: flex;
       .right {
         flex: 1;
+        display: flex;
+        flex-direction: column;
+        .rank {
+          flex: 1.5;
+          /* background-color: skyblue; */
+        }
+        .year {
+          flex: 1;
+          /* background-color: lightcoral; */
+        }
+        .counter {
+          flex: 1;
+          /* background-color: red; */
+        }
+        /* background-color: red; */
       }
       .left {
         flex: 1;
+        height: 1040px;
+        /* background-color: red; */
+        display: flex;
+        flex-direction: column;
+        .Tourist {
+          flex: 1.2;
+          /* background: skyblue; */
+        }
+        .Sex {
+          flex: 1;
+          /* background-color: lightcoral; */
+        }
+        .Age {
+          flex: 1;
+          /* background-color: beige; */
+        }
       }
       .center {
-        flex: 2;
+        flex: 1.5;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        .map {
+          flex: 4;
+          /* background-color: skyblue; */
+        }
+        .line {
+          flex: 1;
+          /* background-color: orange; */
+        }
       }
     }
   }
