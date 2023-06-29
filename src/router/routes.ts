@@ -43,6 +43,9 @@ export const constantRoute = [
     component: () => import("@/views/screen/index.vue"),
     meta: { title: "数据大屏", icon: "Platform" },
   },
+];
+//异步路由(权限管理三个子路由，商品管理四个子路由)
+export const asyncRoute = [
   {
     path: "/acl",
     name: "Acl",
@@ -109,6 +112,9 @@ export const constantRoute = [
       },
     ],
   },
+];
+//任意路由
+export const anyRoute = [
   {
     //任意路由，以上三种路由都不匹配的时候
     path: "/:pathMatch(.*)*",
