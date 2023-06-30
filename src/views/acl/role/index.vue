@@ -245,7 +245,7 @@ const updateRole = (row: RoleData) => {
   });
 };
 //自定义校验规则的回调
-const validatorRoleName = (rule: any, value: any, callback: any) => {
+const validatorRoleName = (value: any, callback: any) => {
   if (value.trim().length >= 2) {
     callback();
   } else {

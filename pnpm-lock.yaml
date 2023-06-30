@@ -20,6 +20,9 @@ dependencies:
   element-plus:
     specifier: ^2.3.5
     version: registry.npmmirror.com/element-plus@2.3.5(vue@3.2.47)
+  lodash:
+    specifier: ^4.17.21
+    version: registry.npmmirror.com/lodash@4.17.21
   moment:
     specifier: ^2.29.4
     version: registry.npmmirror.com/moment@2.29.4
@@ -46,6 +49,9 @@ devDependencies:
   '@commitlint/config-conventional':
     specifier: ^17.6.5
     version: registry.npmmirror.com/@commitlint/config-conventional@17.6.5
+  '@types/nprogress':
+    specifier: ^0.2.0
+    version: registry.npmmirror.com/@types/nprogress@0.2.0
   '@typescript-eslint/eslint-plugin':
     specifier: ^5.59.8
     version: registry.npmmirror.com/@typescript-eslint/eslint-plugin@5.59.8(@typescript-eslint/parser@5.59.8)(eslint@8.41.0)(typescript@5.0.2)
@@ -1252,6 +1258,12 @@ packages:
     resolution: {integrity: sha512-Gj7cI7z+98M282Tqmp2K5EIsoouUEzbBJhQQzDE3jSIRk6r9gsz0oUokqIUR4u1R3dMHo0pDHM7sNOHyhulypw==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/normalize-package-data/-/normalize-package-data-2.4.1.tgz}
     name: '@types/normalize-package-data'
     version: 2.4.1
+    dev: true
+
+  registry.npmmirror.com/@types/nprogress@0.2.0:
+    resolution: {integrity: sha512-1cYJrqq9GezNFPsWTZpFut/d4CjpZqA0vhqDUPFWYKF1oIyBz5qnoYMzR+0C/T96t3ebLAC1SSnwrVOm5/j74A==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/nprogress/-/nprogress-0.2.0.tgz}
+    name: '@types/nprogress'
+    version: 0.2.0
     dev: true
 
   registry.npmmirror.com/@types/resolve@1.17.1:

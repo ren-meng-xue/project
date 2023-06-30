@@ -323,7 +323,7 @@ const cancel = () => {
 
 //校验用户名字回调函数
 // 如果校验规则用change，然后在清楚表单验证，清楚不掉，因为首先清空了
-const validatorUserName = (rule: any, value: any, callBack: any) => {
+const validatorUserName = (value: any, callBack: any) => {
   // 用户名称、长度 至少5位
   if (value.trim().length >= 5) {
     callBack();
@@ -332,7 +332,7 @@ const validatorUserName = (rule: any, value: any, callBack: any) => {
   }
 };
 //密码
-const validatorPassword = (rule: any, value: any, callBack: any) => {
+const validatorPassword = (value: any, callBack: any) => {
   // 用户名称、长度 至少5位
   if (value.trim().length >= 6) {
     callBack();
@@ -363,7 +363,7 @@ const setRole = async (row: User) => {
     userRole.value = result.data.assignRoles;
     //抽屉i显示出
     drawer1.value = true;
-    let ids: string[] = userRole.value.map((item) => {
+    let ids: any = userRole.value.map((item) => {
       return item.id;
     });
     handleCheckedCitiesChange(ids);

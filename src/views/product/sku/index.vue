@@ -28,7 +28,7 @@
         prop="skuDesc"
       ></el-table-column>
       <el-table-column label="默认图片" width="150px">
-        <template #default="{ row, $index }">
+        <template #default="{ row }">
           <img
             :src="row.skuDefaultImg"
             alt=""
@@ -47,7 +47,7 @@
         prop="price"
       ></el-table-column>
       <el-table-column label="操作" width="250px" fixed="right">
-        <template #default="{ row, $index }">
+        <template #default="{ row }">
           <el-button
             type="primary"
             size="small"

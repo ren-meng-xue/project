@@ -20,7 +20,7 @@ import useUserStore from "./store/modules/user";
 const userStore = useUserStore(pinia);
 
 // 项目当中任意路由切换都会触发的钩子
-router.beforeEach(async (to: any, from: any, next: any) => {
+router.beforeEach(async (to: any, _from: any, next: any) => {
   document.title = `${setting.title}-${to.meta.title}`;
   //访问某一个路由之前守卫
   //to:将要访问那个路由
@@ -45,7 +45,8 @@ router.beforeEach(async (to: any, from: any, next: any) => {
         //如果没有信息，就发起请求，获取到了再放行
         try {
           await userStore.userInfo(); //获取用户信息成功以后再放行
-          next();
+          //万一：刷新的时候是异步路由，有可能获取到用户信息、异步路由还没加载完毕，一刷新就会出现空白的现象
+          next({ ...to });
         } catch (error) {
           //token失效
           //用户手动更改了我们本地存储的数据

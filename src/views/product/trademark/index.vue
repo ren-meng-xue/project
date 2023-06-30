@@ -1,8 +1,14 @@
 <template>
   <div>
     <el-card class="box-card">
-      <el-button icon="plus" type="primary" @click="addTradeMark"
-        >添加品牌</el-button
+      <el-button
+        icon="plus"
+        type="primary"
+        @click="addTradeMark"
+        v-hasButton="'btn.Trademark.add'"
+      >
+        <!-- v-if="useStore.buttons.includes('btn.Trademark.add')" -->
+        添加品牌</el-button
       >
       <!-- 表格 -->
       <el-table border style="margin: 10px 0px" :data="trademarkArr">
@@ -19,7 +25,7 @@
           </template>
         </el-table-column>
         <el-table-column label="品牌Logo" align="center">
-          <template #default="{ row, $index }">
+          <template #default="{ row }">
             <img :src="row.logoUrl" style="width: 100px; height: 100px" />
           </template>
         </el-table-column>
@@ -120,6 +126,10 @@
 //引入组合式API函数ref
 import { ref, onMounted, reactive, nextTick } from "vue";
 import type { UploadProps, FormRules } from "element-plus";
+//按钮权限的实现
+import useUserStore from "@/store/modules/user";
+//获取用户相关的仓库
+let useStore = useUserStore();
 //获取品牌全部接口
 import {
   reqHasTrademark,
@@ -208,7 +218,7 @@ const cancel = () => {
   dialogFormVisible.value = false;
 };
 //品牌自定义校验规则方法
-const validatorTmName = (rule: any, value: any, callBack: any) => {
+const validatorTmName = (value: any, callBack: any) => {
   //是当表单元素触发blur时候,会触发此方法
   //自定义校验规则
   if (value.trim().length >= 2) {
@@ -219,7 +229,7 @@ const validatorTmName = (rule: any, value: any, callBack: any) => {
   }
 };
 //品牌LOGO图片的自定义校验规则方法
-const validatorLogoUrl = (rule: any, value: any, callBack: any) => {
+const validatorLogoUrl = (value: any, callBack: any) => {
   //如果图片上传
   if (value) {
     callBack();

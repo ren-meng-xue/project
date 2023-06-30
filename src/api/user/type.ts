@@ -9,6 +9,7 @@ export interface responseData {
   code: number;
   message: string;
   ok: boolean;
+  routes?: string[];
 }
 //定义登陆接口返回的数据类型
 export interface loginResponseData extends responseData {

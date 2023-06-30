@@ -27,13 +27,13 @@
     <el-form-item label="平台属性">
       <el-form :inline="true">
         <el-form-item
-          v-for="(item, index) in attrArr"
+          v-for="item in attrArr"
           :key="item.id"
           :label="item.attrName"
         >
           <el-select v-model="item.attrIdAndValueId">
             <el-option
-              v-for="(attr, i) in item.attrValueList"
+              v-for="attr in item.attrValueList"
               :key="attr.id"
               :label="attr.valueName"
               :value="`${item.id}:${attr.id}`"

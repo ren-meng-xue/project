@@ -27,7 +27,7 @@
             show-overflow-tooltip
           ></el-table-column>
           <el-table-column label="SPU操作">
-            <template #default="{ row, $index }">
+            <template #default="{ row }">
               <el-button
                 icon="Plus"
                 type="primary"

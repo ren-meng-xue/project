@@ -40,29 +40,29 @@
 
 <script setup lang="ts">
 //获取路由对象
-import { useRoute } from 'vue-router'
+import { useRoute } from "vue-router";
 // 引入左侧菜单logo子组件
-import Logo from './Logo/index.vue'
+import Logo from "./Logo/index.vue";
 //引入菜单组件
-import Menu from './menu/index.vue'
+import Menu from "./menu/index.vue";
 //引入顶部 tabBar组件
-import TabBar from './tabBar/index.vue'
+import TabBar from "./tabBar/index.vue";
 //右侧内容展示区域
-import Main from './main/index.vue'
-let $route = useRoute()
+import Main from "./main/index.vue";
+let $route = useRoute();
 // console.log($route.path, "9090");
 //获取用户相关的小仓库
-import useUserStore from '@/store/modules/user'
-import useLayoutSettingStore from '@/store/modules/setting'
-let useStore = useUserStore()
+import useUserStore from "@/store/modules/user";
+import useLayoutSettingStore from "@/store/modules/setting";
+let useStore = useUserStore();
 //获取layout配置仓库
-let LayoutSettingStore = useLayoutSettingStore()
+let LayoutSettingStore = useLayoutSettingStore();
 // console.log(LayoutSettingStore, "LayoutSettingStore");
 </script>
 <script lang="ts">
 export default {
-  name: 'Layout'
-}
+  name: "Layout",
+};
 </script>
 <style lang="scss" scoped>
 .layout_container {
